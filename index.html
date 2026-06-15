@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>🧪 آزمون عناصر شیمی – ۱۱۸ عنصر</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Tahoma', 'Segoe UI', sans-serif;
+      direction: rtl;
+      text-align: right;
+      padding: 12px;
+      background: #f0f4f8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 14px;
+    }
+    h1 { margin: 10px 0; color: #1a3c5e; text-shadow: 1px 1px 2px rgba(0,0,0,0.1); }
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 18px;
+      margin: 8px auto;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      animation: slideUp 0.4s ease;
+    }
+    @keyframes slideUp { from { opacity:0; transform: translateY(20px); } to { opacity:1; transform: translateY(0); } }
+    button {
+      padding: 12px 18px;
+      margin: 6px 4px;
+      border: none;
+      border-radius: 25px;
+      background: #0d6efd;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      touch-action: manipulation;
+    }
+    button:active { transform: scale(0.96); background: #0a58ca; }
+    button.secondary { background: #6c757d; }
+    select, input {
+      padding: 12px 14px;
+      border-radius: 25px;
+      border: 2px solid #dee2e6;
+      font-size: 14px;
+      margin: 6px 0;
+      width: 100%;
+      max-width: 350px;
+      background: white;
+      transition: border-color 0.2s;
+    }
+    select:focus, input:focus { border-color: #0d6efd; outline: none; }
+    .checkbox-container { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
+    .checkbox-container input[type="checkbox"] { width: 20px; height: 20px; accent-color: #0d6efd; transform: scale(1.1); }
+    .timer {
+      position: sticky; top: 10px; background: #ffc107; color: #000; padding: 12px; border-radius: 25px;
+      text-align: center; font-weight: bold; font-size: 1.1rem; z-index: 100; margin: 10px 0;
+      transition: background 0.3s, color 0.3s; animation: pulse 2s infinite;
+    }
+    .timer.warning { background: #ff9800; color: white; animation: pulse 1s infinite; }
+    .timer.danger { background: #f44336; color: white; animation: pulse 0.5s infinite; }
+    @keyframes pulse { 0%{transform: scale(1);} 50%{transform: scale(1.02);} 100%{transform: scale(1);} }
+    .question-block {
+      background: #f8fafc; border-radius: 16px; padding: 16px; margin: 14px 0;
+      border-right: 5px solid #0d6efd; animation: slideIn 0.4s ease; transition: all 0.3s;
+    }
+    @keyframes slideIn { from {opacity:0; transform: translateX(15px);} to {opacity:1; transform: translateX(0);} }
+    .question-block.disabled { opacity: 0.75; filter: grayscale(0.1); pointer-events: none; }
+    .feedback { margin-top: 10px; font-weight: bold; animation: fadeIn 0.4s ease; font-size: 13px; }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+    .result { background: #e8f5e9; border-right: 5px solid #4caf50; }
+    .table-wrapper { overflow-x: auto; max-height: 65vh; margin: 8px 0; font-size: 13px; }
+    table { border-collapse: collapse; width: 100%; }
+    th { background: #0d6efd; color: white; padding: 10px; position: sticky; top: 0; z-index: 2; }
+    td, th { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    tr:nth-child(even) { background: #f2f7ff; }
+    .chat-container { background: white; border-radius: 20px; box-shadow: 0 6px 20px rgba(0,0,0,0.08); overflow: hidden; }
+    .chat-header { background: #0d6efd; color: white; padding: 14px; text-align: center; font-weight: bold; }
+    .chat-messages { height: 320px; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; background: #f9fafb; }
+    .message { display: flex; align-items: flex-start; gap: 8px; max-width: 85%; animation: msgIn 0.3s ease; }
+    @keyframes msgIn { from {opacity:0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);} }
+    .user-message { align-self: flex-end; flex-direction: row-reverse; }
+    .bot-message { align-self: flex-start; }
+    .avatar { font-size: 24px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: #e9ecef; border-radius: 50%; flex-shrink: 0; }
+    .bubble { padding: 10px 14px; border-radius: 18px; background: #f1f1f1; line-height: 1.5; font-size: 13px; }
+    .user-message .bubble { background: #e3f2fd; border-bottom-right-radius: 5px; }
+    .bot-message .bubble { background: #f1f1f1; border-bottom-left-radius: 5px; }
+    .chat-input { display: flex; padding: 12px; border-top: 1px solid #eee; background: #f9f9f9; gap: 8px; }
+    .chat-input input { flex: 1; margin: 0; }
+    .send-btn { border-radius: 25px; padding: 10px 14px; font-size: 20px; background: #0d6efd; }
+    .level-select { display: flex; align-items: center; gap: 6px; margin: 8px 14px; }
+    .level-select select { max-width: 130px; padding: 8px 10px; font-size: 13px; }
+    .finish-btn { background: #198754; animation: pulseBtn 1.5s infinite; }
+    @keyframes pulseBtn { 0%{box-shadow:0 0 0 0 rgba(25,135,84,0.5);} 70%{box-shadow:0 0 0 10px rgba(25,135,84,0);} 100%{box-shadow:0 0 0 0 rgba(25,135,84,0);} }
+    .share-btn { background: #6f42c1; }
+    /* Shake animation for wrong answer */
+    @keyframes shake { 0%,100%{transform: translateX(0);} 20%{transform: translateX(-5px);} 40%{transform: translateX(5px);} 60%{transform: translateX(-3px);} 80%{transform: translateX(3px);} }
+    .shake { animation: shake 0.3s ease; }
+    /* Settings panel */
+    .settings-overlay {
+      display: none;
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: rgba(0,0,0,0.5); z-index:200;
+      justify-content: center; align-items: center;
+    }
+    .settings-panel {
+      background: white; border-radius: 20px; padding: 20px; width: 320px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      animation: fadeIn 0.3s;
+    }
+    .settings-panel h3 { margin-bottom: 15px; }
+    .toggle-container { display: flex; align-items: center; justify-content: space-between; margin: 12px 0; }
+    .toggle-switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top:0; left:0; right:0; bottom:0; background: #ccc; border-radius: 28px; transition: 0.3s; }
+    .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
+    input:checked + .slider { background: #0d6efd; }
+    input:checked + .slider:before { transform: translateX(22px); }
+    .gear-btn { position: fixed; top: 15px; right: 15px; background: #6c757d; border-radius: 50%; width: 42px; height: 42px; font-size: 22px; display: flex; align-items: center; justify-content: center; z-index: 150; cursor: pointer; border: none; color: white; }
+  </style>
+</head>
+<body>
+  <button class="gear-btn" onclick="toggleSettings()">⚙️</button>
+  <!-- پنل تنظیمات -->
+  <div class="settings-overlay" id="settingsOverlay">
+    <div class="settings-panel">
+      <h3>⚙️ تنظیمات</h3>
+      <div class="toggle-container">
+        <span>🔊 افکت صوتی</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="soundToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-container">
+        <span>📳 لرزش</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="vibrateToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="toggle-container">
+        <span>✨ انیمیشن</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="animToggle" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <button onclick="saveSettings()" style="width:100%; margin-top:10px;">💾 ذخیره تنظیمات</button>
+      <button class="secondary" onclick="toggleSettings()" style="width:100%;">↩️ بازگشت</button>
+    </div>
+  </div>
+
+  <h1>🧪 آزمون عناصر شیمی (۱۱۸ عنصر)</h1>
+
+  <!-- منوی اصلی -->
+  <div class="card" id="menu">
+    <label>📊 محدوده عناصر:</label>
+    <select id="range">
+      <option value="1">🔹 بلوک ۱ (۱ تا ۳۶)</option>
+      <option value="2">🔸 بلوک ۲ (۳۷ تا ۷۲)</option>
+      <option value="3">🔹 بلوک ۳ (۷۳ تا ۱۰۸)</option>
+      <option value="4">🔸 بلوک ۴ (۱۰۹ تا ۱۱۸)</option>
+      <option value="all">🌐 کل جدول (۱۱۸ عنصر)</option>
+    </select>
+    <label>🔢 تعداد سوال:</label>
+    <input type="number" id="numQuestions" min="1" max="118" value="10">
+    <label>🎯 حالت آزمون:</label>
+    <select id="mode">
+      <option value="sym2num">🔣 نماد ← عدد اتمی</option>
+      <option value="sym2name">🔣 نماد ← نام</option>
+      <option value="name2num">📛 نام ← عدد اتمی</option>
+      <option value="name2sym">📛 نام ← نماد</option>
+      <option value="num2name">🔢 عدد اتمی ← نام</option>
+      <option value="num2sym">🔢 عدد اتمی ← نماد</option>
+      <option value="mixed">🔀 ترکیبی (همه موارد)</option>
+    </select>
+    <div class="checkbox-container">
+      <input type="checkbox" id="timedQuiz">
+      <label>⏳ آزمون زمان‌دار (هر سوال ۲۰ ثانیه)</label>
+    </div>
+    <button onclick="startQuiz()">🚀 شروع آزمون</button>
+    <button class="secondary" onclick="showTable()">📋 مرور جدول کامل</button>
+    <button class="secondary" onclick="showChatBot()">🤖 چت‌بات عناصر</button>
+  </div>
+
+  <!-- بخش آزمون -->
+  <div class="card" id="quizArea" style="display:none;">
+    <div id="timer" class="timer" style="display:none;"></div>
+    <div id="questionsList"></div>
+    <button class="finish-btn" id="finishBtn" onclick="finishQuiz()">🏁 پایان آزمون</button>
+    <button class="secondary" onclick="backToMenu()" style="margin-top:12px;">↩️ بازگشت به منو</button>
+  </div>
+
+  <!-- بخش نتیجه -->
+  <div class="card result" id="resultArea" style="display:none;"></div>
+
+  <!-- جدول مرور -->
+  <div class="card" id="tableArea" style="display:none;"></div>
+
+  <!-- چت‌بات -->
+  <div class="chat-container card" id="chatArea" style="display:none;">
+    <div class="chat-header">🤖 چت‌بات عناصر شیمیایی</div>
+    <div class="level-select">
+      <label style="font-size:13px;">🎓 سطح پاسخ:</label>
+      <select id="chatLevel" onchange="updateChatLevel()">
+        <option value="general">عمومی</option>
+        <option value="detailed" selected>دقیق</option>
+        <option value="expert">تخصصی</option>
+      </select>
+    </div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="message bot-message">
+        <div class="avatar">🤖</div>
+        <div class="bubble">سلام! عدد اتمی، نماد یا نام یک عنصر را وارد کنید.</div>
+      </div>
+    </div>
+    <div class="chat-input">
+      <input type="text" id="userInput" placeholder="عدد اتمی، نماد یا نام...">
+      <button class="send-btn" onclick="sendMessage()">⬆️</button>
+    </div>
+    <button class="secondary" onclick="backToMenu()" style="margin:10px;">↩️ بازگشت</button>
+  </div>
+
+<script>
+// ======================= آرایه کامل ۱۱۸ عنصر با سه سطح اطلاعاتی =======================
+const elements = [
+  {name:"هیدروژن", symbol:"H", atomic_number:1, type:"غیرفلز", mass:1.008,
+   general:"سبک‌ترین عنصر، گازی بی‌رنگ و قابل اشتعال.",
+   detailed:"هیدروژن سبک‌ترین و فراوان‌ترین عنصر در جهان است. این عنصر گازی بی‌رنگ، بی‌بو و بسیار قابل اشتعال است. در ستاره‌ها و صنعت سوخت کاربرد دارد.",
+   expert:"هیدروژن (H) با عدد اتمی ۱ و جرم اتمی ۱.۰۰۸، سبک‌ترین عنصر جدول تناوبی است. در دمای اتاق گازی بی‌رنگ و بی‌بوست و به شدت قابل اشتعال. ۷۵٪ جرم جهان را تشکیل می‌دهد و به عنوان سوخت پاک در پیل‌های سوختی استفاده می‌شود."
+  },
+  {name:"هلیوم", symbol:"He", atomic_number:2, type:"گاز نجیب", mass:4.0026,
+   general:"گاز نجیب سبک، بی‌رنگ و غیرسمی.",
+   detailed:"هلیوم گاز نجیب بی‌رنگ، بی‌بو و غیرسمی است. پس از هیدروژن سبک‌ترین عنصر. در بالن‌ها و خنک‌کننده‌های MRI کاربرد دارد.",
+   expert:"هلیوم (He) با عدد اتمی ۲، کمترین نقطه جوش را دارد و در دمای نزدیک صفر مطلق مایع می‌ماند. در کیهان پس از هیدروژن فراوان‌ترین است و در راکتورهای هسته‌ای به عنوان خنک‌کننده استفاده می‌شود."
+  },
+  {name:"لیتیم", symbol:"Li", atomic_number:3, type:"فلز قلیایی", mass:6.94,
+   general:"سبک‌ترین فلز جامد، نرم و واکنش‌پذیر.",
+   detailed:"لیتیم فلزی نرم و نقره‌ای-سفید است. در باتری‌های لیتیوم-یون، آلیاژها و داروهای روانپزشکی کاربرد دارد.",
+   expert:"لیتیم (Li) با عدد اتمی ۳، سبک‌ترین فلز است و به شدت با آب واکنش می‌دهد. در صنعت باتری‌سازی مدرن، سرامیک‌ها و روان‌پزشکی (درمان دوقطبی) استفاده می‌شود."
+  },
+  {name:"بریلیم", symbol:"Be", atomic_number:4, type:"فلز قلیایی خاکی", mass:9.0122,
+   general:"فلزی سفت و سبک، سمی در صورت تنفس.",
+   detailed:"بریلیم فلزی خاکستری-فولادی، سمی است. در هوافضا، راکتورهای هسته‌ای و ابزار دقیق کاربرد دارد.",
+   expert:"بریلیم (Be) با عدد اتمی ۴، سبک‌ترین فلز قلیایی خاکی با نقطه ذوب بالا و رسانایی گرمایی عالی. در آینه‌های تلسکوپ فضایی جیمز وب و پنجره‌های اشعه ایکس استفاده می‌شود."
+  },
+  {name:"بور", symbol:"B", atomic_number:5, type:"شبه‌فلز", mass:10.81,
+   general:"شبه‌فلزی سیاه و شکننده، در شیشه‌های مقاوم.",
+   detailed:"بور شبه‌فلزی با سختی بالا. در شیشه‌های بوروسیلیکاتی (پیرکس)، کود کشاورزی و شوینده‌ها کاربرد دارد.",
+   expert:"بور (B) با عدد اتمی ۵، در طبیعت به صورت بوراکس یافت می‌شود. ترکیبات آن در ساخت شیشه‌های مقاوم به حرارت، نیمه‌هادی‌ها و مواد منفجره استفاده می‌شوند."
+  },
+  {name:"کربن", symbol:"C", atomic_number:6, type:"غیرفلز", mass:12.011,
+   general:"اساس حیات، به شکل الماس و گرافیت.",
+   detailed:"کربن غیرفلزی با توانایی تشکیل میلیون‌ها ترکیب. پایه شیمی آلی و در فولاد، پلاستیک و سوخت‌ها وجود دارد.",
+   expert:"کربن (C) با عدد اتمی ۶، چهارمین عنصر فراوان در جهان. آلوتروپ‌های آن الماس، گرافیت، گرافن و فولرن هستند که هر یک خواص الکتریکی و مکانیکی متفاوتی دارند."
+  },
+  {name:"نیتروژن", symbol:"N", atomic_number:7, type:"غیرفلز", mass:14.007,
+   general:"گاز بی‌رنگ، ۷۸٪ هوا را تشکیل می‌دهد.",
+   detailed:"نیتروژن گازی بی‌رنگ و بی‌بو، برای رشد گیاهان ضروری است. در کودها، مواد منفجره و به عنوان گاز محافظ استفاده می‌شود.",
+   expert:"نیتروژن (N) با عدد اتمی ۷، به صورت N2 در جو زمین وجود دارد. در چرخه زیستی تثبیت می‌شود و در تولید آمونیاک (فرایند هابر) و اسید نیتریک اهمیت صنعتی دارد."
+  },
+  {name:"اکسیژن", symbol:"O", atomic_number:8, type:"غیرفلز", mass:15.999,
+   general:"حیاتی برای تنفس، ۲۱٪ هوا.",
+   detailed:"اکسیژن گازی بی‌رنگ، برای تنفس سلولی ضروری. در پزشکی، صنعت فولاد و جوشکاری کاربرد دارد.",
+   expert:"اکسیژن (O) فراوان‌ترین عنصر در پوسته زمین و دومین عنصر در جو. به صورت O2 و O3 (ازن) وجود دارد و تقریباً در تمام ترکیبات زیستی و معدنی شرکت می‌کند."
+  },
+  {name:"فلوئور", symbol:"F", atomic_number:9, type:"هالوژن", mass:18.998,
+   general:"الکترونگاتیوترین عنصر، گازی زرد کمرنگ.",
+   detailed:"فلوئور گازی بسیار واکنش‌پذیر. در خمیردندان (فلوراید)، تفلون و مواد خنک‌کننده استفاده می‌شود.",
+   expert:"فلوئور (F) با الکترونگاتیویته ۴.۰، واکنش‌پذیرترین نافلز است. ترکیبات آن مانند هگزافلورید اورانیم در غنی‌سازی اورانیم و در صنعت داروسازی نقش دارند."
+  },
+  {name:"نئون", symbol:"Ne", atomic_number:10, type:"گاز نجیب", mass:20.180,
+   general:"گاز نجیب بی‌رنگ، در تابلوهای تبلیغاتی.",
+   detailed:"نئون گازی بی‌رنگ که در لامپ‌های نئون نور نارنجی-قرمز تولید می‌کند. در لیزرها و نشانگرهای ولتاژ بالا کاربرد دارد.",
+   expert:"نئون (Ne) با عدد اتمی ۱۰، دومین گاز نجیب سبک. در تخلیه الکتریکی تابش مشخصی دارد و در لامپ‌های نئون، لیزرهای هلیوم-نئون و لامپ‌های نشانگر استفاده می‌شود."
+  },
+  // عناصر ۱۱ تا ۱۱۸ (خلاصه اما کامل)
+  {name:"سدیم", symbol:"Na", atomic_number:11, type:"فلز قلیایی", mass:22.990,
+   general:"فلز نرم و واکنش‌پذیر، در نمک طعام.",
+   detailed:"سدیم فلزی نقره‌ای-سفید، با آب به شدت واکنش می‌دهد. در سیستم عصبی بدن و صنایع شیمیایی حیاتی است.",
+   expert:"سدیم (Na) با عدد اتمی ۱۱، در گروه فلزات قلیایی. به صورت یون Na+ در مایعات بدن وجود دارد و در تولید شیشه، کاغذ و صابون استفاده می‌شود."
+  },
+  {name:"منیزیم", symbol:"Mg", atomic_number:12, type:"فلز قلیایی خاکی", mass:24.305,
+   general:"فلز سبک با شعله سفید درخشان.",
+   detailed:"منیزیم فلزی سبک که در آلیاژهای هواپیما، آتش‌بازی و به عنوان مکمل غذایی کاربرد دارد.",
+   expert:"منیزیم (Mg) با عدد اتمی ۱۲، هشتمین عنصر فراوان در پوسته. در کلروفیل گیاهان و بیش از ۳۰۰ واکنش آنزیمی بدن ضروری است."
+  },
+  {name:"آلومینیوم", symbol:"Al", atomic_number:13, type:"فلز", mass:26.982,
+   general:"فلز سبک و مقاوم در برابر زنگ‌زدگی.",
+   detailed:"آلومینیوم سومین عنصر فراوان در پوسته. در بسته‌بندی، ساختمان‌سازی و حمل‌ونقل استفاده می‌شود.",
+   expert:"آلومینیوم (Al) با چگالی ۲.۷ گرم بر سانتی‌متر مکعب، به دلیل لایه اکسید محافظ در برابر خوردگی مقاوم است و در صنایع هوافضا، برق و خودروسازی کاربرد دارد."
+  },
+  {name:"سیلیسیم", symbol:"Si", atomic_number:14, type:"شبه‌فلز", mass:28.085,
+   general:"پایه صنعت الکترونیک، در تراشه‌ها.",
+   detailed:"سیلیسیم شبه‌فلزی خاکستری، دومین عنصر پوسته. در میکروچیپ‌ها، شیشه و سیمان استفاده می‌شود.",
+   expert:"سیلیسیم (Si) نیمه‌هادی اصلی در الکترونیک مدرن، پایه ترانزیستورها و سلول‌های خورشیدی. به صورت SiO2 در شن و کوارتز یافت می‌شود."
+  },
+  {name:"فسفر", symbol:"P", atomic_number:15, type:"غیرفلز", mass:30.974,
+   general:"در DNA و استخوان‌ها یافت می‌شود.",
+   detailed:"فسفر غیرفلزی با چند آلوتروپی. در کودهای شیمیایی، کبریت و مواد منفجره کاربرد دارد.",
+   expert:"فسفر (P) به صورت فسفات در زیستی، و در صنعت برای تولید اسید فسفریک و مواد شوینده استفاده می‌شود. فسفر سفید بسیار سمی است."
+  },
+  {name:"گوگرد", symbol:"S", atomic_number:16, type:"غیرفلز", mass:32.06,
+   general:"غیرفلز زرد، بوی مشخص.",
+   detailed:"گوگرد در آتشفشان‌ها و ترکیبات سولفیدی یافت می‌شود. در اسید سولفوریک، لاستیک و داروسازی استفاده می‌شود.",
+   expert:"گوگرد (S) با عدد اتمی ۱۶، به صورت S8 وجود دارد. اسید سولفوریک مهم‌ترین ماده شیمیایی صنعتی از آن ساخته می‌شود."
+  },
+  {name:"کلر", symbol:"Cl", atomic_number:17, type:"هالوژن", mass:35.45,
+   general:"گازی سمی سبز-زرد، ضدعفونی‌کننده.",
+   detailed:"کلر گازی سمی با بوی تند. در تصفیه آب، تولید PVC و سفیدکننده‌ها کاربرد دارد.",
+   expert:"کلر (Cl) با عدد اتمی ۱۷، در گروه هالوژن‌ها. به عنوان ضدعفونی‌کننده قوی در استخرها و در صنایع پتروشیمی برای تولید پلاستیک‌ها استفاده می‌شود."
+  },
+  {name:"آرگون", symbol:"Ar", atomic_number:18, type:"گاز نجیب", mass:39.948,
+   general:"گاز نجیب بی‌رنگ، ۰.۹۳٪ هوا.",
+   detailed:"آرگون به عنوان گاز محافظ در جوشکاری و لامپ‌های روشنایی استفاده می‌شود.",
+   expert:"آرگون (Ar) با عدد اتمی ۱۸، سومین گاز فراوان جو زمین. به دلیل بی‌اثری شیمیایی در فرایندهای صنعتی به عنوان محافظ به کار می‌رود."
+  },
+  {name:"پتاسیم", symbol:"K", atomic_number:19, type:"فلز قلیایی", mass:39.098,
+   general:"فلز نرم و واکنش‌پذیر، ضروری برای بدن.",
+   detailed:"پتاسیم در تنظیم فشار خون و عملکرد عضلات نقش دارد. در کودها و مواد منفجره کاربرد دارد.",
+   expert:"پتاسیم (K) با عدد اتمی ۱۹، در طبیعت به صورت ترکیبات یافت می‌شود و یکی از عناصر ضروری برای حیات است. در صنعت شیشه‌سازی و صابون‌سازی نیز کاربرد دارد."
+  },
+  {name:"کلسیم", symbol:"Ca", atomic_number:20, type:"فلز قلیایی خاکی", mass:40.078,
+   general:"برای استخوان‌ها و دندان‌ها ضروری است.",
+   detailed:"کلسیم فراوان‌ترین فلز در بدن انسان. در سیمان، گچ و به عنوان مکمل غذایی استفاده می‌شود.",
+   expert:"کلسیم (Ca) با عدد اتمی ۲۰، در ساختار استخوان و دندان به صورت هیدروکسی‌آپاتیت وجود دارد. در صنعت ساختمان و تولید فولاد نیز نقش مهمی دارد."
+  },
+  {name:"اسکاندیم", symbol:"Sc", atomic_number:21, type:"فلز واسطه", mass:44.956,
+   general:"فلزی نرم و نادر، در نورهای با کارایی بالا.",
+   detailed:"اسکاندیم در آلیاژهای سبک هوافضا و تجهیزات ورزشی کاربرد دارد.",
+   expert:"اسکاندیم (Sc) با عدد اتمی ۲۱، به عنوان یک عنصر کمیاب در طبیعت وجود دارد و ترکیبات آن در لامپ‌های بخار جیوه برای ایجاد نور سفید استفاده می‌شود."
+  },
+  {name:"تیتانیوم", symbol:"Ti", atomic_number:22, type:"فلز واسطه", mass:47.867,
+   general:"فلز قوی، سبک و مقاوم به خوردگی.",
+   detailed:"تیتانیوم در ایمپلنت‌های پزشکی، هواپیماها و جواهرات کاربرد دارد.",
+   expert:"تیتانیوم (Ti) با استحکام بالا و چگالی کم، در صنایع هوافضا و پزشکی (پروتزها) به کار می‌رود. مقاومت عالی در برابر آب دریا دارد."
+  },
+  {name:"وانادیم", symbol:"V", atomic_number:23, type:"فلز واسطه", mass:50.942,
+   general:"فلز سخت و نقره‌ای، در آلیاژهای فولادی.",
+   detailed:"وانادیم در تولید فولادهای مقاوم و به عنوان کاتالیزور استفاده می‌شود.",
+   expert:"وانادیم (V) با عدد اتمی ۲۳، به فولاد خاصیت مقاومت در برابر سایش و ضربه می‌بخشد. ترکیبات آن رنگ‌های زیبایی ایجاد می‌کنند."
+  },
+  {name:"کروم", symbol:"Cr", atomic_number:24, type:"فلز واسطه", mass:51.996,
+   general:"فلز سخت و براق، برای آبکاری.",
+   detailed:"کروم در فولاد ضدزنگ و پوشش‌های تزئینی خودروها استفاده می‌شود.",
+   expert:"کروم (Cr) با لایه اکسید محافظ، مقاومت بالایی در برابر خوردگی دارد. در صنایع شیمیایی به عنوان رنگدانه (کرومات) نیز کاربرد دارد."
+  },
+  {name:"منگنز", symbol:"Mn", atomic_number:25, type:"فلز واسطه", mass:54.938,
+   general:"فلز خاکستری-صورتی، در باتری‌ها.",
+   detailed:"منگنز در تولید فولاد و باتری‌های قلمی کاربرد دارد.",
+   expert:"منگنز (Mn) با عدد اتمی ۲۵، به عنوان اکسیژن‌زدا در فولادسازی و در ساخت شیشه‌های رنگی استفاده می‌شود."
+  },
+  {name:"آهن", symbol:"Fe", atomic_number:26, type:"فلز واسطه", mass:55.845,
+   general:"فلز مغناطیسی و فراوان، اساس فولاد.",
+   detailed:"آهن چهارمین عنصر پوسته و جزء هموگلوبین خون است.",
+   expert:"آهن (Fe) با عدد اتمی ۲۶، مهم‌ترین فلز صنعتی است. در ساخت فولاد، چدن و آلیاژهای مختلف به کار می‌رود و برای حمل اکسیژن در خون ضروری است."
+  },
+  {name:"کبالت", symbol:"Co", atomic_number:27, type:"فلز واسطه", mass:58.933,
+   general:"فلز سخت و براق، در آلیاژها و ویتامین B12.",
+   detailed:"کبالت در ساخت سوپرآلیاژها، رنگدانه‌ها و پزشکی کاربرد دارد.",
+   expert:"کبالت (Co) با عدد اتمی ۲۷، در آهنرباهای قوی و کاتالیزورهای صنعتی استفاده می‌شود. ایزوتوپ رادیواکتیو آن در رادیوتراپی به کار می‌رود."
+  },
+  {name:"نیکل", symbol:"Ni", atomic_number:28, type:"فلز واسطه", mass:58.693,
+   general:"فلز براق و مقاوم، در فولاد ضدزنگ.",
+   detailed:"نیکل در سکه‌ها، باتری‌های قابل شارژ و آبکاری کاربرد دارد.",
+   expert:"نیکل (Ni) با عدد اتمی ۲۸، مقاومت به خوردگی و حرارت بالایی دارد. در تولید فولادهای ضدزنگ و سوپرآلیاژهای موتور جت استفاده می‌شود."
+  },
+  {name:"مس", symbol:"Cu", atomic_number:29, type:"فلز واسطه", mass:63.546,
+   general:"فلز قرمز-نارنجی با رسانایی عالی.",
+   detailed:"مس در سیم‌کشی، لوله‌کشی و الکترونیک کاربرد دارد.",
+   expert:"مس (Cu) با رسانایی الکتریکی و حرارتی بالا، پس از نقره بهترین رساناست. در آلیاژهای برنج و برنز نیز استفاده می‌شود."
+  },
+  {name:"روی", symbol:"Zn", atomic_number:30, type:"فلز واسطه", mass:65.38,
+   general:"فلز نقرهای-آبی، برای گالوانیزه و سیستم ایمنی.",
+   detailed:"روی در باتری‌ها، آلیاژها و به عنوان مکمل غذایی کاربرد دارد.",
+   expert:"روی (Zn) با عدد اتمی ۳۰، در گالوانیزه کردن فولاد برای جلوگیری از زنگ‌زدگی استفاده می‌شود. بیش از ۱۰۰ آنزیم بدن به روی نیاز دارند."
+  },
+  {name:"گالیم", symbol:"Ga", atomic_number:31, type:"فلز", mass:69.723,
+   general:"فلزی که در دست ذوب می‌شود.",
+   detailed:"گالیم در نیمه‌هادی‌ها، LEDها و دماسنج‌های دما بالا کاربرد دارد.",
+   expert:"گالیم (Ga) با نقطه ذوب ۲۹.۸ درجه سانتی‌گراد، در ساخت ترانزیستورها و سلول‌های خورشیدی به کار می‌رود. آلیاژهای آن جایگزین جیوه سمی می‌شوند."
+  },
+  {name:"ژرمانیم", symbol:"Ge", atomic_number:32, type:"شبه‌فلز", mass:72.630,
+   general:"شبه‌فلز براق، در فیبر نوری.",
+   detailed:"ژرمانیم در ترانزیستورها، دیودها و سیستم‌های مادون قرمز کاربرد دارد.",
+   expert:"ژرمانیم (Ge) با عدد اتمی ۳۲، نیمه‌هادی با شکاف انرژی کوچک، در آشکارسازهای اشعه ایکس و لنزهای دوربین حرارتی استفاده می‌شود."
+  },
+  {name:"آرسنیک", symbol:"As", atomic_number:33, type:"شبه‌فلز", mass:74.922,
+   general:"شبه‌فلزی سمی، در آلیاژها و حشره‌کش‌ها.",
+   detailed:"آرسنیک در صنایع نیمه‌هادی و چوب‌بری استفاده می‌شود.",
+   expert:"آرسنیک (As) با عدد اتمی ۳۳، ترکیبات آن در علف‌کش‌ها و رنگدانه‌ها به کار می‌رود. آلودگی آب‌های زیرزمینی به آرسنیک یک مشکل بهداشتی است."
+  },
+  {name:"سلنیوم", symbol:"Se", atomic_number:34, type:"غیرفلز", mass:78.971,
+   general:"ماده مغذی ضروری، در سلول‌های خورشیدی.",
+   detailed:"سلنیوم در دستگاه‌های فتوکپی، شامپوهای ضدشوره و به عنوان آنتی‌اکسیدان کاربرد دارد.",
+   expert:"سلنیوم (Se) با عدد اتمی ۳۴، در ساخت فتوسل‌ها و یکسوکننده‌ها استفاده می‌شود. به مقدار کم برای بدن ضروری و در مقادیر زیاد سمی است."
+  },
+  {name:"برم", symbol:"Br", atomic_number:35, type:"هالوژن", mass:79.904,
+   general:"هالوژن مایع قهوه‌ای-قرمز با بوی تند.",
+   detailed:"برم در مواد ضدعفونی‌کننده، بازدارنده‌های شعله و داروها استفاده می‌شود.",
+   expert:"برم (Br) تنها نافلز مایع در دمای اتاق است. در تصفیه آب استخرها و به عنوان واسطه شیمیایی در تولید داروها به کار می‌رود."
+  },
+  {name:"کریپتون", symbol:"Kr", atomic_number:36, type:"گاز نجیب", mass:83.798,
+   general:"گاز نجیب، در لامپ‌های فلاش.",
+   detailed:"کریپتون در لامپ‌های فلورسنت و لیزرهای گازی کاربرد دارد.",
+   expert:"کریپتون (Kr) با عدد اتمی ۳۶، در پنجره‌های دوجداره برای عایق‌بندی حرارتی و در تعریف استاندارد متر استفاده می‌شود."
+  },
+  // ۳۷ تا ۷۲
+  {name:"روبیدیم", symbol:"Rb", atomic_number:37, type:"فلز قلیایی", mass:85.468,
+   general:"فلز نرم و واکنش‌پذیر، در ساعت‌های اتمی.",
+   detailed:"روبیدیم در فناوری خلأ و پژوهش‌های علمی کاربرد دارد.",
+   expert:"روبیدیم (Rb) به راحتی یونیزه می‌شود و در ساعت‌های اتمی دقیق و دستگاه‌های تصویربرداری پزشکی استفاده می‌شود."
+  },
+  {name:"استرانسیم", symbol:"Sr", atomic_number:38, type:"فلز قلیایی خاکی", mass:87.62,
+   general:"فلز نقره‌ای، در آتش‌بازی رنگ قرمز.",
+   detailed:"استرانسیم در تولید شیشه و سرامیک و پزشکی هسته‌ای کاربرد دارد.",
+   expert:"استرانسیم (Sr) به عنوان ماده حاجب در تصویربرداری پزشکی و در ساخت آهنرباهای فریت استفاده می‌شود."
+  },
+  {name:"ایتریم", symbol:"Y", atomic_number:39, type:"فلز واسطه", mass:88.906,
+   general:"فلز نقرهای، در فسفرهای قرمز تلویزیون.",
+   detailed:"ایتریم در لیزرها، سرامیک‌های دما بالا و ابررساناها کاربرد دارد.",
+   expert:"ایتریم (Y) با عدد اتمی ۳۹، در ساخت گارنت ایتریم-آلومینیوم (YAG) برای لیزرهای جامد و در LEDهای سفید استفاده می‌شود."
+  },
+  {name:"زیرکونیم", symbol:"Zr", atomic_number:40, type:"فلز واسطه", mass:91.224,
+   general:"فلز مقاوم در برابر خوردگی، در راکتورهای هسته‌ای.",
+   detailed:"زیرکونیم در جواهرات (مکعب زیرکونیا) و صنایع شیمیایی کاربرد دارد.",
+   expert:"زیرکونیم (Zr) با عدد اتمی ۴۰، به دلیل سطح مقطع جذب نوترون پایین، در روکش میله‌های سوخت هسته‌ای استفاده می‌شود."
+  },
+  {name:"نیوبیم", symbol:"Nb", atomic_number:41, type:"فلز واسطه", mass:92.906,
+   general:"فلز نرم و خاکستری، در آلیاژهای فولادی.",
+   detailed:"نیوبیم در ساخت لوله‌های انتقال گاز و آهنرباهای ابررسانا کاربرد دارد.",
+   expert:"نیوبیم (Nb) با عدد اتمی ۴۱، در تولید فولادهای کم‌آلیاژ با استحکام بالا و در ساخت جواهرات به کار می‌رود."
+  },
+  {name:"مولیبدن", symbol:"Mo", atomic_number:42, type:"فلز واسطه", mass:95.95,
+   general:"فلز سخت با نقطه ذوب بالا، در آلیاژها.",
+   detailed:"مولیبدن در صنایع هوافضا، الکترونیک و به عنوان کاتالیزور استفاده می‌شود.",
+   expert:"مولیبدن (Mo) با عدد اتمی ۴۲، در آنزیم‌های گیاهان و باکتری‌ها نقش دارد و در فولادهای مقاوم به حرارت کاربرد دارد."
+  },
+  {name:"تکنیسیم", symbol:"Tc", atomic_number:43, type:"فلز واسطه", mass:97,
+   general:"نخستین عنصر مصنوعی، در پزشکی هسته‌ای.",
+   detailed:"تکنیسیم-۹۹m در تصویربرداری پزشکی (اسکن) کاربرد وسیعی دارد.",
+   expert:"تکنیسیم (Tc) هیچ ایزوتوپ پایداری ندارد. در تشخیص بیماری‌های قلبی و استخوانی استفاده می‌شود."
+  },
+  {name:"روتنیم", symbol:"Ru", atomic_number:44, type:"فلز واسطه", mass:101.07,
+   general:"فلز سخت و سفید، در کاتالیزورها.",
+   detailed:"روتنیم در صنایع الکترونیک و به عنوان مقاومت الکتریکی کاربرد دارد.",
+   expert:"روتنیم (Ru) با عدد اتمی ۴۴، در کاتالیزورهای تصفیه گازهای خروجی خودرو و در ساخت هارد دیسک‌ها استفاده می‌شود."
+  },
+  {name:"رودیم", symbol:"Rh", atomic_number:45, type:"فلز واسطه", mass:102.91,
+   general:"فلز نادر و براق، در مبدل‌های کاتالیستی.",
+   detailed:"رودیم در جواهرات و به عنوان پوشش بازتابنده کاربرد دارد.",
+   expert:"رودیم (Rh) یکی از کمیاب‌ترین فلزات گرانبهاست. در مبدل‌های کاتالیستی خودرو برای کاهش آلایندگی استفاده می‌شود."
+  },
+  {name:"پالادیم", symbol:"Pd", atomic_number:46, type:"فلز واسطه", mass:106.42,
+   general:"فلز نقرهای-سفید، در مبدل‌های کاتالیستی.",
+   detailed:"پالادیم در الکترونیک، دندانپزشکی و جواهرسازی کاربرد دارد.",
+   expert:"پالادیم (Pd) با عدد اتمی ۴۶، توانایی جذب هیدروژن را دارد و در تصفیه گاز هیدروژن استفاده می‌شود."
+  },
+  {name:"نقره", symbol:"Ag", atomic_number:47, type:"فلز واسطه", mass:107.87,
+   general:"فلز گرانبها با رسانایی بالا.",
+   detailed:"نقره در جواهرات، سکه، لوازم الکترونیکی و عکاسی کاربرد دارد.",
+   expert:"نقره (Ag) بهترین رسانای الکتریکی و حرارتی است. یون‌های آن خاصیت ضدباکتریایی دارند و در پانسمان‌های پزشکی استفاده می‌شوند."
+  },
+  {name:"کادمیم", symbol:"Cd", atomic_number:48, type:"فلز واسطه", mass:112.41,
+   general:"فلز نرم و سمی، در باتری‌های نیکل-کادمیم.",
+   detailed:"کادمیم در رنگدانه‌ها و پوشش‌های مقاوم در برابر خوردگی کاربرد دارد.",
+   expert:"کادمیم (Cd) سمی است و تجمع آن در بدن خطرناک. با این حال در ساخت باتری‌های قابل شارژ و آلیاژهای ذوب پایین استفاده می‌شود."
+  },
+  {name:"ایندیم", symbol:"In", atomic_number:49, type:"فلز", mass:114.82,
+   general:"فلز نرم و نقرهای، در صفحه‌های لمسی.",
+   detailed:"ایندیم در لحیم‌کاری، آینه‌ها و نیمه‌هادی‌ها کاربرد دارد.",
+   expert:"ایندیم (In) با عدد اتمی ۴۹، در ساخت الکترودهای شفاف برای نمایشگرهای کریستال مایع و سلول‌های خورشیدی استفاده می‌شود."
+  },
+  {name:"قلع", symbol:"Sn", atomic_number:50, type:"فلز", mass:118.71,
+   general:"فلز نرم و چکش‌خوار، در لحیم‌کاری.",
+   detailed:"قلع در روکش قوطی‌های کنسرو و برنز کاربرد دارد.",
+   expert:"قلع (Sn) با عدد اتمی ۵۰، از دیرباز در ساخت ظروف و آلیاژها به کار رفته. امروزه در لحیم‌های الکترونیکی و شیشه‌های float استفاده می‌شود."
+  },
+  {name:"آنتیموان", symbol:"Sb", atomic_number:51, type:"شبه‌فلز", mass:121.76,
+   general:"شبه‌فلز نقرهای-خاکستری، در بازدارنده‌های شعله.",
+   detailed:"آنتیموان در آلیاژهای ریخته‌گری و باتری‌ها کاربرد دارد.",
+   expert:"آنتیموان (Sb) با عدد اتمی ۵۱، در صنایع نیمه‌هادی و به عنوان کاتالیزور در تولید پلاستیک PET استفاده می‌شود."
+  },
+  {name:"تلوریم", symbol:"Te", atomic_number:52, type:"شبه‌فلز", mass:127.60,
+   general:"شبه‌فلز شکننده، در صفحات خورشیدی.",
+   detailed:"تلوریم در دیسک‌های نوری و مواد ترموالکتریک کاربرد دارد.",
+   expert:"تلوریم (Te) با عدد اتمی ۵۲، در ساخت سلول‌های خورشیدی کادمیم تلوراید و دستگاه‌های سردکننده ترموالکتریک استفاده می‌شود."
+  },
+  {name:"ید", symbol:"I", atomic_number:53, type:"هالوژن", mass:126.90,
+   general:"هالوژن جامد بنفش، برای تیروئید ضروری.",
+   detailed:"ید در ضدعفونی‌کننده‌ها، نمک یددار و داروها کاربرد دارد.",
+   expert:"ید (I) برای سنتز هورمون‌های تیروئید ضروری است. ایزوتوپ رادیواکتیو آن در درمان سرطان تیروئید به کار می‌رود."
+  },
+  {name:"گزنون", symbol:"Xe", atomic_number:54, type:"گاز نجیب", mass:131.29,
+   general:"گاز نجیب سنگین، در لامپ‌های قوس الکتریکی.",
+   detailed:"گزنون در لیزرها، بیهوشی و سیستم‌های پیشرانش فضایی کاربرد دارد.",
+   expert:"گزنون (Xe) با عدد اتمی ۵۴، در لامپ‌های تخلیه با شدت بالا (HID) برای نورپردازی خودروها و پروژکتورها استفاده می‌شود."
+  },
+  {name:"سزیم", symbol:"Cs", atomic_number:55, type:"فلز قلیایی", mass:132.91,
+   general:"فلز طلایی رنگ، در ساعت‌های اتمی.",
+   detailed:"سزیم در صنعت نفت (گل حفاری) و پژوهش‌های علمی کاربرد دارد.",
+   expert:"سزیم (Cs) با عدد اتمی ۵۵، پایه ساعت‌های اتمی دقیق است که استاندارد زمان جهانی را تعیین می‌کنند."
+  },
+  {name:"باریم", symbol:"Ba", atomic_number:56, type:"فلز قلیایی خاکی", mass:137.33,
+   general:"فلز نرم و واکنش‌پذیر، در آتش‌بازی سبز.",
+   detailed:"باریم در پزشکی (بلع باریم) و به عنوان گازگیر در لامپ‌های خلأ کاربرد دارد.",
+   expert:"باریم (Ba) با عدد اتمی ۵۶، در رنگدانه‌های سفید و در ساخت شیشه‌های اپتیکی استفاده می‌شود. سولفات باریم در تصویربرداری گوارشی به کار می‌رود."
+  },
+  {name:"لانتان", symbol:"La", atomic_number:57, type:"لانتانید", mass:138.91,
+   general:"نخستین لانتانید، در شیشه‌های دوربین.",
+   detailed:"لانتان در فندک‌ها، باتری‌های هیبریدی و کاتالیزورها کاربرد دارد.",
+   expert:"لانتان (La) با عدد اتمی ۵۷، در ساخت شیشه‌های با ضریب شکست بالا و الکترودهای باتری نیکل-فلز هیدرید استفاده می‌شود."
+  },
+  {name:"سریم", symbol:"Ce", atomic_number:58, type:"لانتانید", mass:140.12,
+   general:"فلز نرم و واکنش‌پذیر، در کاتالیزورها.",
+   detailed:"سریم در پولیش شیشه و سرامیک، و در مبدل‌های کاتالیستی خودرو کاربرد دارد.",
+   expert:"سریم (Ce) فراوان‌ترین عنصر از گروه لانتانیدهاست. در ساخت آلیاژهای آتش‌زنه (سنگ فندک) و به عنوان کاتالیزور در صنایع پتروشیمی استفاده می‌شود."
+  },
+  {name:"پرازئودیمیم", symbol:"Pr", atomic_number:59, type:"لانتانید", mass:140.91,
+   general:"فلز لانتانیدی، در آهنرباهای قوی.",
+   detailed:"پرازئودیمیم در شیشه‌های جوشکاری و رنگ‌های سرامیک کاربرد دارد.",
+   expert:"پرازئودیمیم (Pr) با عدد اتمی ۵۹، در ساخت آهنرباهای نئودیمیم-پرازئودیمیم و در لیزرهای خاص استفاده می‌شود."
+  },
+  {name:"نئودیمیم", symbol:"Nd", atomic_number:60, type:"لانتانید", mass:144.24,
+   general:"فلز نقرهای، در آهنرباهای فوق‌قوی.",
+   detailed:"نئودیمیم در هدفون‌ها، موتورهای الکتریکی و توربین‌های بادی کاربرد دارد.",
+   expert:"نئودیمیم (Nd) همراه با آهن و بور آهنرباهای دایمی قدرتمندی می‌سازد که در فناوری‌های مدرن ضروری هستند."
+  },
+  {name:"پرومتیم", symbol:"Pm", atomic_number:61, type:"لانتانید", mass:145,
+   general:"عنصر رادیواکتیو مصنوعی، در باتری‌های هسته‌ای.",
+   detailed:"پرومتیم در رنگ‌های شب‌تاب و دستگاه‌های هسته‌ای کوچک کاربرد دارد.",
+   expert:"پرومتیم (Pm) ایزوتوپ‌های پرتوزا دارد و در ضخامت‌سنج‌ها و منابع برق برای فضاپیماها استفاده می‌شود."
+  },
+  {name:"ساماریم", symbol:"Sm", atomic_number:62, type:"لانتانید", mass:150.36,
+   general:"فلز لانتانیدی، در آهنرباهای ساماریم-کبالت.",
+   detailed:"ساماریم در لیزرها، راکتورهای هسته‌ای و پزشکی کاربرد دارد.",
+   expert:"ساماریم (Sm) در ساخت آهنرباهای مقاوم به حرارت بالا و در درمان سرطان استخوان (ساماریم-۱۵۳) استفاده می‌شود."
+  },
+  {name:"یوروپیم", symbol:"Eu", atomic_number:63, type:"لانتانید", mass:151.96,
+   general:"واکنش‌پذیرترین لانتانید، در فسفرهای قرمز تلویزیون.",
+   detailed:"یوروپیم در اسکناس‌های یورو و لامپ‌های فلورسنت کاربرد دارد.",
+   expert:"یوروپیم (Eu) در ساخت فسفرهای قرمز برای نمایشگرها و به عنوان عامل ضدجعل در اسکناس‌ها استفاده می‌شود."
+  },
+  {name:"گادولینیم", symbol:"Gd", atomic_number:64, type:"لانتانید", mass:157.25,
+   general:"فلز نقرهای-سفید، در MRI.",
+   detailed:"گادولینیم به عنوان ماده کنتراست در تصویربرداری پزشکی و در آهنرباها کاربرد دارد.",
+   expert:"گادولینیم (Gd) در محلول‌های کنتراست برای MRI و در ساخت آهنرباهای ابررسانا برای ذخیره‌سازی انرژی استفاده می‌شود."
+  },
+  {name:"تربیم", symbol:"Tb", atomic_number:65, type:"لانتانید", mass:158.93,
+   general:"فلز نرم نقرهای، در فسفرهای سبز.",
+   detailed:"تربیم در لیزرهای حالت جامد و لامپ‌های کم‌مصرف کاربرد دارد.",
+   expert:"تربیم (Tb) در ساخت فسفرهای سبز برای نمایشگرها و در دستگاه‌های مگنتواپتیکی استفاده می‌شود."
+  },
+  {name:"دیسپروزیم", symbol:"Dy", atomic_number:66, type:"لانتانید", mass:162.50,
+   general:"فلز سخت، در آهنرباهای دما بالا.",
+   detailed:"دیسپروزیم در لیزرها، لامپ‌های متال هالید و راکتورهای هسته‌ای کاربرد دارد.",
+   expert:"دیسپروزیم (Dy) در ساخت آهنرباهای نئودیمیم برای حفظ خاصیت مغناطیسی در دماهای بالا اضافه می‌شود."
+  },
+  {name:"هولمیم", symbol:"Ho", atomic_number:67, type:"لانتانید", mass:164.93,
+   general:"فلز نرم و چکش‌خوار، در لیزرهای پزشکی.",
+   detailed:"هولمیم در آهنرباها و میله‌های کنترل راکتور هسته‌ای کاربرد دارد.",
+   expert:"هولمیم (Ho) در لیزرهای حالت جامد برای جراحی‌های کم‌تهاجم و در ساخت آهنرباهای خاص استفاده می‌شود."
+  },
+  {name:"اربیم", symbol:"Er", atomic_number:68, type:"لانتانید", mass:167.26,
+   general:"فلز نقرهای، در فیبرهای نوری.",
+   detailed:"اربیم در تقویت‌کننده‌های فیبر نوری و لیزرهای پوست کاربرد دارد.",
+   expert:"اربیم (Er) برای تقویت سیگنال‌ها در شبکه‌های مخابراتی فیبر نوری و در لیزرهای دندانپزشکی استفاده می‌شود."
+  },
+  {name:"تولیم", symbol:"Tm", atomic_number:69, type:"لانتانید", mass:168.93,
+   general:"کمیاب‌ترین لانتانید، در دستگاه‌های پرتابل اشعه ایکس.",
+   detailed:"تولیم در لیزرها و منابع رادیواکتیو پزشکی کاربرد دارد.",
+   expert:"تولیم (Tm) ایزوتوپ رادیواکتیو آن در دستگاه‌های تصویربرداری قابل حمل استفاده می‌شود."
+  },
+  {name:"ایتربیم", symbol:"Yb", atomic_number:70, type:"لانتانید", mass:173.05,
+   general:"فلز نرم نقرهای، در لیزرها.",
+   detailed:"ایتربیم در ساعت‌های اتمی و به عنوان ماده کنتراست در MRI کاربرد دارد.",
+   expert:"ایتربیم (Yb) در لیزرهای فیبری و در پژوهش‌های فیزیک کوانتومی برای خنک‌سازی لیزری استفاده می‌شود."
+  },
+  {name:"لوتتیم", symbol:"Lu", atomic_number:71, type:"لانتانید", mass:174.97,
+   general:"سنگین‌ترین لانتانید، در PET اسکن.",
+   detailed:"لوتتیم در کاتالیزورها و پزشکی هسته‌ای کاربرد دارد.",
+   expert:"لوتتیم (Lu) ایزوتوپ Lu-177 در درمان تومورهای عصبی-غددی و سرطان پروستات به کار می‌رود."
+  },
+  {name:"هافنیم", symbol:"Hf", atomic_number:72, type:"فلز واسطه", mass:178.49,
+   general:"فلز نقرهای مقاوم، در میله‌های کنترل راکتور.",
+   detailed:"هافنیم در سوپرآلیاژها و الکترودهای جوشکاری کاربرد دارد.",
+   expert:"هافنیم (Hf) سطح مقطع جذب نوترون بالایی دارد و در میله‌های کنترل راکتورهای هسته‌ای استفاده می‌شود."
+  },
+  // ۷۳ تا ۱۰۸
+  {name:"تانتال", symbol:"Ta", atomic_number:73, type:"فلز واسطه", mass:180.95,
+   general:"فلز سخت و مقاوم، در خازن‌های الکترونیکی.",
+   detailed:"تانتال در ایمپلنت‌های پزشکی و ابزارهای جراحی کاربرد دارد.",
+   expert:"تانتال (Ta) به دلیل زیست‌سازگاری بالا در ساخت پروتزهای استخوانی و در خازن‌های با ظرفیت بالا استفاده می‌شود."
+  },
+  {name:"تنگستن", symbol:"W", atomic_number:74, type:"فلز واسطه", mass:183.84,
+   general:"بالاترین نقطه ذوب در میان فلزات.",
+   detailed:"تنگستن در رشته‌های لامپ، ابزارهای برش و جواهرات کاربرد دارد.",
+   expert:"تنگستن (W) با نقطه ذوب ۳۴۲۲ درجه سانتی‌گراد، در ساخت الکترودهای جوشکاری و آلیاژهای مقاوم به حرارت برای صنایع هوافضا به کار می‌رود."
+  },
+  {name:"رنیوم", symbol:"Re", atomic_number:75, type:"فلز واسطه", mass:186.21,
+   general:"فلز نادر با نقطه ذوب بالا، در موتور جت.",
+   detailed:"رنیوم در ترموکوپل‌ها و کاتالیزورهای صنعتی کاربرد دارد.",
+   expert:"رنیوم (Re) در سوپرآلیاژهای پره‌های توربین موتور جت و در کاتالیزورهای reforming نفتا استفاده می‌شود."
+  },
+  {name:"اسمیم", symbol:"Os", atomic_number:76, type:"فلز واسطه", mass:190.23,
+   general:"چگال‌ترین عنصر طبیعی، در آلیاژهای بسیار سخت.",
+   detailed:"اسمیم در قلم‌های خودنویس، سوزن‌های گرامافون و کاتالیزورها کاربرد دارد.",
+   expert:"اسمیم (Os) با چگالی ۲۲.۵۹ g/cm³، در ساخت آلیاژهای مقاوم به سایش و در میکروسکوپ الکترونی به عنوان رنگ‌کننده زیستی استفاده می‌شود."
+  },
+  {name:"ایریدیم", symbol:"Ir", atomic_number:77, type:"فلز واسطه", mass:192.22,
+   general:"فلز مقاوم به خوردگی، در شمع‌های موتور.",
+   detailed:"ایریدیم در الکترودها، بوته‌های آزمایشگاهی و جواهرات کاربرد دارد.",
+   expert:"ایریدیم (Ir) یکی از مقاوم‌ترین فلزات در برابر خوردگی است و در ساخت شمع‌های خودروهای با کارایی بالا و محفظه‌های رشد بلور استفاده می‌شود."
+  },
+  {name:"پلاتین", symbol:"Pt", atomic_number:78, type:"فلز واسطه", mass:195.08,
+   general:"فلز گرانبهای نقرهای، در مبدل‌های کاتالیستی.",
+   detailed:"پلاتین در جواهرات، الکترونیک و به عنوان کاتالیزور در صنایع شیمیایی کاربرد دارد.",
+   expert:"پلاتین (Pt) به عنوان کاتالیزور در فرایندهای پتروشیمی و در ساخت الکترودهای پیل‌های سوختی استفاده می‌شود. مقاومت بالایی در برابر خوردگی دارد."
+  },
+  {name:"طلا", symbol:"Au", atomic_number:79, type:"فلز واسطه", mass:196.97,
+   general:"فلز زرد براق و چکش‌خوار، در جواهرات و الکترونیک.",
+   detailed:"طلا رسانایی بالا و مقاومت در برابر اکسیداسیون دارد. در سکه، ذخیره ارزش و پزشکی کاربرد دارد.",
+   expert:"طلا (Au) با عدد اتمی ۷۹، به صورت نانوذرات در پزشکی (درمان سرطان) و در اتصالات الکترونیکی حساس استفاده می‌شود."
+  },
+  {name:"جیوه", symbol:"Hg", atomic_number:80, type:"فلز", mass:200.59,
+   general:"تنها فلز مایع در دمای اتاق، سمی.",
+   detailed:"جیوه در دماسنج‌ها، لامپ‌های بخار جیوه و صنایع کلر-آلکالی کاربرد دارد.",
+   expert:"جیوه (Hg) با عدد اتمی ۸۰، در استخراج طلا و نقره و در ساخت کلر و سود سوزآور به روش الکترولیز استفاده می‌شود. به شدت برای محیط زیست سمی است."
+  },
+  {name:"تالیم", symbol:"Tl", atomic_number:81, type:"فلز", mass:204.38,
+   general:"فلز نرم و سمی، در سموم موش.",
+   detailed:"تالیم در الکترونیک نوری و لنزهای مادون قرمز کاربرد دارد.",
+   expert:"تالیم (Tl) ترکیبات آن در ساخت شیشه‌های با ضریب شکست بالا و در آشکارسازهای تابش استفاده می‌شود. مسمومیت با تالیم بسیار خطرناک است."
+  },
+  {name:"سرب", symbol:"Pb", atomic_number:82, type:"فلز", mass:207.2,
+   general:"فلز نرم و چگال، در باتری‌ها.",
+   detailed:"سرب در سپرهای محافظ، لحیم‌کاری و مهمات کاربرد دارد.",
+   expert:"سرب (Pb) با عدد اتمی ۸۲، در باتری‌های خودرو و به عنوان محافظ در برابر اشعه ایکس استفاده می‌شود. مسمومیت مزمن با سرب بر سیستم عصبی تأثیر می‌گذارد."
+  },
+  {name:"بیسموت", symbol:"Bi", atomic_number:83, type:"فلز", mass:208.98,
+   general:"فلز شکننده با رنگ صورتی، در لوازم آرایشی.",
+   detailed:"بیسموت در داروهای گوارشی و آلیاژهای ذوب پایین کاربرد دارد.",
+   expert:"بیسموت (Bi) با عدد اتمی ۸۳، کم‌ترین سمیت را در میان فلزات سنگین دارد. در ساخت شیرهای ایمنی آتش‌نشانی و به عنوان جایگزین سرب استفاده می‌شود."
+  },
+  {name:"پولونیم", symbol:"Po", atomic_number:84, type:"فلز", mass:209,
+   general:"عنصر رادیواکتیو، در منابع گرمایی فضاپیماها.",
+   detailed:"پولونیم در دستگاه‌های حذف بار الکترواستاتیک و پژوهش‌های هسته‌ای کاربرد دارد.",
+   expert:"پولونیم-۲۱۰ (Po-210) یک تابنده آلفا قوی است و در مولدهای ترموالکتریک فضاپیماها به عنوان منبع گرما استفاده می‌شود."
+  },
+  {name:"آستاتین", symbol:"At", atomic_number:85, type:"هالوژن", mass:210,
+   general:"کمیاب‌ترین هالوژن، رادیواکتیو.",
+   detailed:"آستاتین خواص شبه‌فلزی دارد و در پزشکی هسته‌ای تحقیق می‌شود.",
+   expert:"آستاتین (At) با عدد اتمی ۸۵، به دلیل نیمه‌عمر کوتاه، مطالعه آن دشوار است. ایزوتوپ At-211 در درمان سرطان‌های خاص نویدبخش است."
+  },
+  {name:"رادون", symbol:"Rn", atomic_number:86, type:"گاز نجیب", mass:222,
+   general:"گاز نجیب رادیواکتیو، در چشمه‌های آب گرم.",
+   detailed:"رادون در زمین‌شناسی و پزشکی (درمان رادون) کاربرد دارد.",
+   expert:"رادون (Rn) با عدد اتمی ۸۶، محصول فروپاشی اورانیم است و تجمع آن در ساختمان‌ها خطر سرطان ریه را افزایش می‌دهد."
+  },
+  {name:"فرانسیم", symbol:"Fr", atomic_number:87, type:"فلز قلیایی", mass:223,
+   general:"نادرترین فلز قلیایی، بسیار رادیواکتیو.",
+   detailed:"فرانسیم در پژوهش‌های اتمی و طیف‌سنجی کاربرد دارد.",
+   expert:"فرانسیم (Fr) با نیمه‌عمر کوتاه (حدود ۲۲ دقیقه)، به مقدار بسیار کم در طبیعت یافت می‌شود و مطالعه آن به درک ساختار هسته کمک می‌کند."
+  },
+  {name:"رادیم", symbol:"Ra", atomic_number:88, type:"فلز قلیایی خاکی", mass:226,
+   general:"فلز رادیواکتیو درخشان، در رنگ‌های شب‌تاب.",
+   detailed:"رادیم در پزشکی (درمان سرطان) و پژوهش‌های هسته‌ای کاربرد داشت.",
+   expert:"رادیم (Ra) با عدد اتمی ۸۸، توسط ماری کوری کشف شد. ایزوتوپ Ra-226 در گذشته در رنگ‌های شب‌تاب و امروزه در رادیوتراپی استفاده می‌شود."
+  },
+  {name:"اکتینیم", symbol:"Ac", atomic_number:89, type:"اکتینید", mass:227,
+   general:"فلز رادیواکتیو نرم، در پزشکی هسته‌ای.",
+   detailed:"اکتینیم در تولید نوترون و درمان سرطان پروستات کاربرد دارد.",
+   expert:"اکتینیم (Ac) با عدد اتمی ۸۹، سرسلسله سری فروپاشی اکتینیم است. Ac-225 در درمان هدفمند تومورها با ذرات آلفا استفاده می‌شود."
+  },
+  {name:"توریم", symbol:"Th", atomic_number:90, type:"اکتینید", mass:232.04,
+   general:"فلز رادیواکتیو، سوخت بالقوه هسته‌ای.",
+   detailed:"توریم در راکتورهای هسته‌ای و لامپ‌های گازی کاربرد دارد.",
+   expert:"توریم (Th) با عدد اتمی ۹۰، فراوان‌تر از اورانیم است و در راکتورهای زاینده می‌تواند به U-233 تبدیل شود. پسماند هسته‌ای کمتری تولید می‌کند."
+  },
+  {name:"پروتاکتینیم", symbol:"Pa", atomic_number:91, type:"اکتینید", mass:231.04,
+   general:"فلز رادیواکتیو کمیاب، در پژوهش‌های هسته‌ای.",
+   detailed:"پروتاکتینیم به دلیل کمیابی و رادیواکتیویته، کاربرد تجاری محدودی دارد.",
+   expert:"پروتاکتینیم (Pa) با عدد اتمی ۹۱، یکی از عناصر واسطه در سری فروپاشی اورانیم است و در مطالعه برهم‌کنش‌های هسته‌ای استفاده می‌شود."
+  },
+  {name:"اورانیم", symbol:"U", atomic_number:92, type:"اکتینید", mass:238.03,
+   general:"فلز سنگین رادیواکتیو، سوخت اصلی راکتورهای هسته‌ای.",
+   detailed:"اورانیم در تولید برق هسته‌ای، سلاح‌های هسته‌ای و به عنوان محافظ تابش کاربرد دارد.",
+   expert:"اورانیم (U) با عدد اتمی ۹۲، دارای ایزوتوپ‌های U-235 و U-238 است. U-235 برای شکافت هسته‌ای و تولید انرژی یا بمب اتمی غنی‌سازی می‌شود."
+  },
+  {name:"نپتونیم", symbol:"Np", atomic_number:93, type:"اکتینید", mass:237,
+   general:"نخستین عنصر ترانس‌اورانیم، در آشکارسازهای نوترون.",
+   detailed:"نپتونیم در پژوهش‌های هسته‌ای و ساخت باتری‌های هسته‌ای کاربرد دارد.",
+   expert:"نپتونیم (Np) با عدد اتمی ۹۳، به صورت مصنوعی تولید می‌شود و می‌تواند به عنوان سوخت در راکتورهای سریع استفاده شود."
+  },
+  {name:"پلوتونیم", symbol:"Pu", atomic_number:94, type:"اکتینید", mass:244,
+   general:"فلز رادیواکتیو، در سلاح‌های هسته‌ای و مولدهای فضاپیما.",
+   detailed:"پلوتونیم-۲۳۹ در ساخت بمب‌های اتمی و به عنوان سوخت در راکتورهای خاص کاربرد دارد.",
+   expert:"پلوتونیم (Pu) شکاف‌پذیر است و در مولدهای ترموالکتریک رادیوایزوتوپی (RTG) برای مأموریت‌های فضایی دوردست استفاده می‌شود."
+  },
+  {name:"امریسیم", symbol:"Am", atomic_number:95, type:"اکتینید", mass:243,
+   general:"عنصر مصنوعی رادیواکتیو، در آشکارسازهای دود.",
+   detailed:"امریسیم-۲۴۱ در دستگاه‌های هشدار دود یونیزاسیون کاربرد دارد.",
+   expert:"امریسیم (Am) تابنده آلفا است و در ضخامت‌سنج‌ها و منابع نوترون برای چاه‌پیمایی نفت استفاده می‌شود."
+  },
+  {name:"کوریم", symbol:"Cm", atomic_number:96, type:"اکتینید", mass:247,
+   general:"فلز رادیواکتیو سخت، در مولدهای ترموالکتریک.",
+   detailed:"کوریم در پژوهش‌های علمی و به عنوان منبع گرما در فضاپیماها کاربرد دارد.",
+   expert:"کوریم (Cm) با عدد اتمی ۹۶، به دلیل تابش گرمای بالا، در مأموریت‌های فضایی بدون سرنشین استفاده می‌شود."
+  },
+  {name:"برکلیم", symbol:"Bk", atomic_number:97, type:"اکتینید", mass:247,
+   general:"عنصر مصنوعی رادیواکتیو، در پژوهش‌های علمی.",
+   detailed:"برکلیم در سنتز عناصر سنگین‌تر و مطالعه خواص هسته‌ای کاربرد دارد.",
+   expert:"برکلیم (Bk) با عدد اتمی ۹۷، به مقدار بسیار کم تولید می‌شود و در تحقیقات بنیادی فیزیک هسته‌ای استفاده می‌شود."
+  },
+  {name:"کالیفرنیم", symbol:"Cf", atomic_number:98, type:"اکتینید", mass:251,
+   general:"فلز رادیواکتیو، در درمان سرطان و آشکارسازهای فلز.",
+   detailed:"کالیفرنیم-۲۵۲ منبع قوی نوترون است و در پزشکی و صنعت کاربرد دارد.",
+   expert:"کالیفرنیم (Cf) در پرتودرمانی تومورها و در دستگاه‌های آشکارساز فرودگاه برای تشخیص مواد منفجره استفاده می‌شود."
+  },
+  {name:"اینشتینیم", symbol:"Es", atomic_number:99, type:"اکتینید", mass:252,
+   general:"عنصر مصنوعی فوق‌سنگین، در پژوهش‌های هسته‌ای.",
+   detailed:"اینشتینیم به مقدار ناچیز تولید و مطالعه می‌شود.",
+   expert:"اینشتینیم (Es) با عدد اتمی ۹۹، نخستین بار در بقایای انفجار هیدروژنی کشف شد. برای سنتز عناصر جدید به کار می‌رود."
+  },
+  {name:"فرمیم", symbol:"Fm", atomic_number:100, type:"اکتینید", mass:257,
+   general:"عنصر مصنوعی رادیواکتیو، تولید در مقادیر کم.",
+   detailed:"فرمیم در مطالعات شیمی هسته‌ای و فیزیک ذرات کاربرد دارد.",
+   expert:"فرمیم (Fm) با عدد اتمی ۱۰۰، از طریق بمباران عناصر سبک‌تر با ذرات شتاب‌دار ساخته می‌شود."
+  },
+  {name:"مندلیفیم", symbol:"Md", atomic_number:101, type:"اکتینید", mass:258,
+   general:"عنصر مصنوعی به نام مندلیف.",
+   detailed:"مندلیفیم در پژوهش‌های شیمی هسته‌ای و سنتز عناصر فوق‌سنگین کاربرد دارد.",
+   expert:"مندلیفیم (Md) با عدد اتمی ۱۰۱، به افتخار دمیتری مندلیف نام‌گذاری شده و تنها در حد اتمی مطالعه می‌شود."
+  },
+  {name:"نوبلیم", symbol:"No", atomic_number:102, type:"اکتینید", mass:259,
+   general:"عنصر مصنوعی به نام آلفرد نوبل.",
+   detailed:"نوبلیم در تحقیقات بنیادی فیزیک و شیمی هسته‌ای کاربرد دارد.",
+   expert:"نوبلیم (No) با عدد اتمی ۱۰۲، به دلیل نیمه‌عمر کوتاه، بررسی خواص شیمیایی آن بسیار دشوار است."
+  },
+  {name:"لارنسیم", symbol:"Lr", atomic_number:103, type:"اکتینید", mass:266,
+   general:"آخرین اکتینید، عنصری مصنوعی و فوق‌سنگین.",
+   detailed:"لارنسیم در پژوهش‌های علمی برای درک ساختار هسته استفاده می‌شود.",
+   expert:"لارنسیم (Lr) با عدد اتمی ۱۰۳، مرز بین اکتینیدها و عناصر فوق‌سنگین را مشخص می‌کند."
+  },
+  {name:"رادرفوردیم", symbol:"Rf", atomic_number:104, type:"فلز واسطه", mass:267,
+   general:"عنصر فوق‌سنگین، به نام ارنست رادرفورد.",
+   detailed:"رادرفوردیم در پژوهش‌های شیمی و فیزیک هسته‌ای مطالعه می‌شود.",
+   expert:"رادرفوردیم (Rf) با عدد اتمی ۱۰۴، نخستین عنصر از سری 6d است. خواص شیمیایی آن مشابه هافنیم پیش‌بینی می‌شود."
+  },
+  {name:"دوبنیم", symbol:"Db", atomic_number:105, type:"فلز واسطه", mass:268,
+   general:"عنصر مصنوعی، به نام دوبنا (روسیه).",
+   detailed:"دوبنیم در مطالعات هسته‌ای و سنتز عناصر جدید کاربرد دارد.",
+   expert:"دوبنیم (Db) با عدد اتمی ۱۰۵، در شتاب‌دهنده‌های ذرات تولید و خواص آن به طور محدود بررسی شده است."
+  },
+  {name:"سیبورگیم", symbol:"Sg", atomic_number:106, type:"فلز واسطه", mass:269,
+   general:"عنصر مصنوعی، به نام گلن سیبورگ.",
+   detailed:"سیبورگیم در پژوهش‌های شیمی فوق‌سنگین‌ها استفاده می‌شود.",
+   expert:"سیبورگیم (Sg) با عدد اتمی ۱۰۶، هم‌رده تنگستن است و شیمی آن مشابه عناصر گروه ۶ می‌باشد."
+  },
+  {name:"بوریم", symbol:"Bh", atomic_number:107, type:"فلز واسطه", mass:270,
+   general:"عنصر فوق‌سنگین، به نام نیلز بور.",
+   detailed:"بوریم در آزمایش‌های شتاب‌دهنده تولید و مطالعه می‌شود.",
+   expert:"بوریم (Bh) با عدد اتمی ۱۰۷، در گروه ۷ جدول تناوبی و شبیه رنیوم پیش‌بینی می‌شود."
+  },
+  {name:"هاسیم", symbol:"Hs", atomic_number:108, type:"فلز واسطه", mass:269,
+   general:"عنصر مصنوعی، به نام ایالت هسن آلمان.",
+   detailed:"هاسیم در تحقیقات بنیادی برای شناخت عناصر فوق‌سنگین کاربرد دارد.",
+   expert:"هاسیم (Hs) با عدد اتمی ۱۰۸، هم‌رده اسمیم است و نخستین بار در دارمشتات سنتز شد."
+  },
+  {name:"مایتنریم", symbol:"Mt", atomic_number:109, type:"فلز واسطه", mass:278,
+   general:"عنصر مصنوعی، به نام لیزه مایتنر.",
+   detailed:"مایتنریم در پژوهش‌های شیمی هسته‌ای مطالعه می‌شود.",
+   expert:"مایتنریم (Mt) با عدد اتمی ۱۰۹، در گروه ۹ جدول و شبیه ایریدیم پیش‌بینی می‌شود."
+  },
+  {name:"دارمشتادیم", symbol:"Ds", atomic_number:110, type:"فلز واسطه", mass:281,
+   general:"عنصر فوق‌سنگین، به نام شهر دارمشتات.",
+   detailed:"دارمشتادیم در تحقیقات هسته‌ای و سنتز عناصر سنگین‌تر کاربرد دارد.",
+   expert:"دارمشتادیم (Ds) با عدد اتمی ۱۱۰، هم‌رده پلاتین است و خواص فلز نجیب از خود نشان می‌دهد."
+  },
+  {name:"رونتگنیم", symbol:"Rg", atomic_number:111, type:"فلز واسطه", mass:282,
+   general:"عنصر مصنوعی، به نام ویلهلم رونتگن.",
+   detailed:"رونتگنیم در مطالعات شیمیایی عناصر فوق‌سنگین کاربرد دارد.",
+   expert:"رونتگنیم (Rg) با عدد اتمی ۱۱۱، در گروه ۱۱ و احتمالاً خواصی شبیه طلا دارد."
+  },
+  {name:"کوپرنیسیم", symbol:"Cn", atomic_number:112, type:"فلز واسطه", mass:285,
+   general:"عنصر فوق‌سنگین، به نام نیکلاوس کوپرنیک.",
+   detailed:"کوپرنیسیم در پژوهش‌های علمی برای درک ساختار هسته استفاده می‌شود.",
+   expert:"کوپرنیسیم (Cn) با عدد اتمی ۱۱۲، در گروه ۱۲ و احتمالاً گازی یا مایع در دمای اتاق است."
+  },
+  {name:"نیهونیم", symbol:"Nh", atomic_number:113, type:"فلز", mass:286,
+   general:"عنصر مصنوعی، نامش از ژاپن (نیهون).",
+   detailed:"نیهونیم در پژوهش‌های هسته‌ای و شیمی فوق‌سنگین‌ها مطالعه می‌شود.",
+   expert:"نیهونیم (Nh) با عدد اتمی ۱۱۳، در گروه ۱۳ و احتمالاً خواصی شبیه تالیم دارد."
+  },
+  {name:"فلروویوم", symbol:"Fl", atomic_number:114, type:"فلز", mass:289,
+   general:"عنصر فوق‌سنگین، به نام آزمایشگاه فلروف.",
+   detailed:"فلروویوم در تحقیقات بنیادی فیزیک هسته‌ای کاربرد دارد.",
+   expert:"فلروویوم (Fl) با عدد اتمی ۱۱۴، در گروه ۱۴ و احتمالاً خواصی بین فلز و نافلز دارد."
+  },
+  {name:"موسکوویم", symbol:"Mc", atomic_number:115, type:"فلز", mass:290,
+   general:"عنصر مصنوعی، به نام مسکو.",
+   detailed:"موسکوویم در آزمایش‌های شتاب‌دهنده سنتز و مطالعه می‌شود.",
+   expert:"موسکوویم (Mc) با عدد اتمی ۱۱۵، در گروه ۱۵ و احتمالاً شبیه بیسموت است."
+  },
+  {name:"لیورموریم", symbol:"Lv", atomic_number:116, type:"فلز", mass:293,
+   general:"عنصر فوق‌سنگین، به نام آزمایشگاه لیورمور.",
+   detailed:"لیورموریم در پژوهش‌های شیمی هسته‌ای مطالعه می‌شود.",
+   expert:"لیورموریم (Lv) با عدد اتمی ۱۱۶، در گروه ۱۶ و احتمالاً خواصی شبیه پولونیم دارد."
+  },
+  {name:"تنسین", symbol:"Ts", atomic_number:117, type:"هالوژن", mass:294,
+   general:"عنصر مصنوعی هالوژن، به نام ایالت تنسی.",
+   detailed:"تنسین در مطالعات شیمی فوق‌سنگین‌ها کاربرد دارد.",
+   expert:"تنسین (Ts) با عدد اتمی ۱۱۷، در گروه ۱۷ و احتمالاً شبیه آستاتین است."
+  },
+  {name:"اوگانسون", symbol:"Og", atomic_number:118, type:"گاز نجیب", mass:294,
+   general:"سنگین‌ترین عنصر شناخته‌شده، گاز نجیب پیش‌بینی‌شده.",
+   detailed:"اوگانسون در پژوهش‌های علمی برای تکمیل جدول تناوبی سنتز شده است.",
+   expert:"اوگانسون (Og) با عدد اتمی ۱۱۸، در گروه ۱۸ و احتمالاً در دمای اتاق گازی است، اما به دلیل نیمه‌عمر کوتاه مطالعه آن دشوار است."
+  }
+];
+
+// ======================= تنظیمات =======================
+let settings = {
+  sound: true,
+  vibrate: true,
+  animations: true
+};
+const savedSettings = localStorage.getItem('quizSettings');
+if (savedSettings) { try { settings = JSON.parse(savedSettings); } catch(e) {} }
+document.getElementById('soundToggle').checked = settings.sound;
+document.getElementById('vibrateToggle').checked = settings.vibrate;
+document.getElementById('animToggle').checked = settings.animations;
+
+function toggleSettings() {
+  const overlay = document.getElementById('settingsOverlay');
+  if (overlay.style.display === 'flex') {
+    overlay.style.display = 'none';
+  } else {
+    document.getElementById('soundToggle').checked = settings.sound;
+    document.getElementById('vibrateToggle').checked = settings.vibrate;
+    document.getElementById('animToggle').checked = settings.animations;
+    overlay.style.display = 'flex';
+  }
+}
+
+function saveSettings() {
+  settings.sound = document.getElementById('soundToggle').checked;
+  settings.vibrate = document.getElementById('vibrateToggle').checked;
+  settings.animations = document.getElementById('animToggle').checked;
+  localStorage.setItem('quizSettings', JSON.stringify(settings));
+  toggleSettings();
+}
+
+function applyAnimation(el, animClass) {
+  if (settings.animations) {
+    el.classList.add(animClass);
+    setTimeout(() => el.classList.remove(animClass), 400);
+  }
+}
+
+// ======================= ابزارهای کمکی =======================
+function normalizePersian(str) {
+  return str.trim().replace(/\s+/g, ' ').replace(/ي/g, 'ی').replace(/ك/g, 'ک').replace(/\u200c/g, '').toLowerCase();
+}
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  const dp = Array.from({length: m+1}, () => Array(n+1).fill(0));
+  for(let i=0; i<=m; i++) dp[i][0] = i;
+  for(let j=0; j<=n; j++) dp[0][j] = j;
+  for(let i=1; i<=m; i++){
+    for(let j=1; j<=n; j++){
+      dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+    }
+  }
+  return dp[m][n];
+}
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// ======================= افکت‌های صوتی و لرزش =======================
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playTone(freq, duration, type = 'sine') {
+  if (!settings.sound) return;
+  try {
+    const ctx = getAudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + duration);
+  } catch(e) {}
+}
+function playCorrectSound() { playTone(880, 0.1, "sine"); }
+function playWrongSound() { playTone(220, 0.2, "sawtooth"); }
+function playFinishSound() {
+  playTone(523, 0.15); setTimeout(() => playTone(659, 0.15), 150); setTimeout(() => playTone(784, 0.2), 300);
+}
+
+// مدیریت لرزش نتیجه
+let vibrationInterval = null;
+let vibrationTimeout = null;
+
+function stopResultVibration() {
+  if (vibrationInterval) clearInterval(vibrationInterval);
+  vibrationInterval = null;
+  if (vibrationTimeout) clearTimeout(vibrationTimeout);
+  vibrationTimeout = null;
+  if (navigator.vibrate) navigator.vibrate(0);
+}
+
+function startResultVibration(score20) {
+  if (!settings.vibrate || !navigator.vibrate) return;
+  stopResultVibration();
+
+  let pattern = [];
+  if (score20 >= 18) {
+    // عالی: بلند و کوتاه ممتد
+    pattern = [600, 200, 300, 200];
+  } else if (score20 >= 15) {
+    // خوب: متوسط
+    pattern = [400, 200];
+  } else if (score20 >= 10) {
+    // متوسط: کوتاه
+    pattern = [200, 300];
+  } else {
+    // نیاز به تمرین: یکسره ۲۰ ثانیه
+    navigator.vibrate(20000);
+    vibrationTimeout = setTimeout(() => navigator.vibrate(0), 20000);
+    return;
+  }
+
+  const cycleTime = pattern.reduce((a,b) => a+b, 0);
+  navigator.vibrate(pattern);
+  vibrationInterval = setInterval(() => {
+    navigator.vibrate(pattern);
+  }, cycleTime);
+
+  vibrationTimeout = setTimeout(() => {
+    stopResultVibration();
+  }, 20000);
+}
+
+// توقف لرزش با خروج از صفحه
+window.addEventListener('beforeunload', stopResultVibration);
+window.addEventListener('visibilitychange', () => {
+  if (document.hidden) stopResultVibration();
+});
+
+// ======================= متغیرهای آزمون =======================
+let quiz = [];
+let timeLeft = 0, totalTime = 0, timerInterval = null, quizEnded = false, warningBeeped = false;
+let currentChatLevel = 'detailed';
+
+// ======================= توابع اصلی =======================
+function startQuiz() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  quizEnded = false;
+  warningBeeped = false;
+  stopResultVibration();
+  if (settings.sound) playTone(660, 0.1, "triangle");
+
+  document.getElementById("menu").style.display = "none";
+  document.getElementById("tableArea").style.display = "none";
+  document.getElementById("resultArea").style.display = "none";
+  document.getElementById("chatArea").style.display = "none";
+  const quizArea = document.getElementById("quizArea");
+  quizArea.style.display = "block";
+  document.getElementById("questionsList").innerHTML = "";
+
+  const rangeVal = document.getElementById("range").value;
+  const numQ = parseInt(document.getElementById("numQuestions").value);
+  const modeVal = document.getElementById("mode").value;
+  const isTimed = document.getElementById("timedQuiz").checked;
+
+  let pool;
+  if (rangeVal === "all") {
+    pool = elements;
+  } else {
+    const block = parseInt(rangeVal);
+    const start = (block - 1) * 36;
+    const end = Math.min(start + 36, elements.length);
+    pool = elements.slice(start, end);
+  }
+
+  const shuffled = shuffle([...pool]);
+  quiz = shuffled.slice(0, numQ).map(elem => {
+    let qMode = modeVal;
+    if (modeVal === "mixed") {
+      const modes = ["sym2num", "sym2name", "name2num", "name2sym", "num2name", "num2sym"];
+      qMode = modes[Math.floor(Math.random() * modes.length)];
+    }
+    return { element: elem, mode: qMode, answered: false, correct: false };
+  });
+
+  renderAllQuestions();
+
+  if (isTimed) {
+    totalTime = numQ * 20;
+    timeLeft = totalTime;
+    document.getElementById("timer").style.display = "block";
+    document.getElementById("timer").className = "timer";
+    updateTimerDisplay();
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      updateTimerDisplay();
+      if (timeLeft <= 0) { clearInterval(timerInterval); finishQuiz(); }
+    }, 1000);
+  } else {
+    document.getElementById("timer").style.display = "none";
+  }
+}
+
+function renderAllQuestions() {
+  const container = document.getElementById("questionsList");
+  container.innerHTML = "";
+  quiz.forEach((q, idx) => {
+    const elem = q.element;
+    let questionText = "", inputHTML = "";
+    switch (q.mode) {
+      case "sym2num":
+        questionText = `🔣 نماد: <b>${elem.symbol}</b> → عدد اتمی؟`;
+        inputHTML = `<input type="number" id="ans_${idx}" placeholder="عدد اتمی">`;
+        break;
+      case "sym2name":
+        questionText = `🔣 نماد: <b>${elem.symbol}</b> → نام؟`;
+        inputHTML = `<input type="text" id="ans_${idx}" placeholder="نام عنصر">`;
+        break;
+      case "name2num":
+        questionText = `📛 نام: <b>${elem.name}</b> → عدد اتمی؟`;
+        inputHTML = `<input type="number" id="ans_${idx}" placeholder="عدد اتمی">`;
+        break;
+      case "name2sym":
+        questionText = `📛 نام: <b>${elem.name}</b> → نماد؟`;
+        inputHTML = `<input type="text" id="ans_${idx}" placeholder="نماد شیمیایی">`;
+        break;
+      case "num2name":
+        questionText = `🔢 عدد اتمی: <b>${elem.atomic_number}</b> → نام؟`;
+        inputHTML = `<input type="text" id="ans_${idx}" placeholder="نام عنصر">`;
+        break;
+      case "num2sym":
+        questionText = `🔢 عدد اتمی: <b>${elem.atomic_number}</b> → نماد؟`;
+        inputHTML = `<input type="text" id="ans_${idx}" placeholder="نماد شیمیایی">`;
+        break;
+    }
+    const qDiv = document.createElement("div");
+    qDiv.className = "question-block";
+    qDiv.id = `qblock_${idx}`;
+    qDiv.innerHTML = `
+      <p><b>سوال ${idx+1}:</b><br>${questionText}</p>
+      <div>${inputHTML}</div>
+      <div class="feedback" id="feedback_${idx}"></div>
+    `;
+    container.appendChild(qDiv);
+  });
+}
+
+function finishQuiz() {
+  if (quizEnded) return;
+  if (settings.sound) playFinishSound();
+  clearInterval(timerInterval);
+  quizEnded = true;
+  document.getElementById("timer").style.display = "none";
+
+  let score = 0;
+  quiz.forEach((q, idx) => {
+    if (q.answered) return;
+    const inputEl = document.getElementById(`ans_${idx}`);
+    const answer = inputEl ? inputEl.value.trim() : "";
+    let isCorrect = false, correctDisplay = "";
+    switch (q.mode) {
+      case "sym2num":
+      case "name2num":
+        isCorrect = (parseInt(answer) === q.element.atomic_number);
+        correctDisplay = q.element.atomic_number.toString();
+        break;
+      case "sym2name":
+      case "num2name": {
+        const nA = normalizePersian(answer), nC = normalizePersian(q.element.name);
+        isCorrect = (nA === nC || levenshtein(nA, nC) <= 2);
+        correctDisplay = q.element.name;
+        break;
+      }
+      case "name2sym":
+      case "num2sym":
+        isCorrect = (answer.toUpperCase() === q.element.symbol.toUpperCase());
+        correctDisplay = q.element.symbol;
+        break;
+    }
+    q.answered = true;
+    q.correct = isCorrect;
+    if (isCorrect) score++;
+
+    const fb = document.getElementById(`feedback_${idx}`);
+    if (fb) {
+      fb.innerHTML = isCorrect ? "✅ درست" : `❌ پاسخ صحیح: ${correctDisplay}`;
+      fb.style.color = isCorrect ? "green" : "red";
+    }
+    if (inputEl) inputEl.disabled = true;
+    document.getElementById(`qblock_${idx}`).classList.add("disabled");
+
+    if (isCorrect) {
+      if (settings.sound) playCorrectSound();
+    } else {
+      if (settings.sound) playWrongSound();
+      if (settings.vibrate && navigator.vibrate) navigator.vibrate(200);
+      const qb = document.getElementById(`qblock_${idx}`);
+      applyAnimation(qb, 'shake');
+    }
+  });
+
+  showResult(score);
+}
+
+function showResult(score) {
+  const resultDiv = document.getElementById("resultArea");
+  resultDiv.style.display = "block";
+
+  const total = quiz.length;
+  const score20 = Math.round((score / total) * 20);
+  let status = '';
+  if (score20 >= 18) status = 'عالی 🌟';
+  else if (score20 >= 15) status = 'خوب 👍';
+  else if (score20 >= 10) status = 'متوسط 😐';
+  else status = 'نیاز به تمرین 📚';
+
+  const shareText = `من در یک آزمون شامل ${total} سوال از عناصر جدول تناوبی شرکت کردم و نمره "${score20}" از ۲۰ را دریافت کردم؛ وضعیت من "${status}" است.`;
+
+  resultDiv.innerHTML = `
+    <h3>🎉 آزمون پایان یافت</h3>
+    <p style="font-size:1.1rem;">📊 امتیاز شما: <b>${score20} از ۲۰</b> (${score} پاسخ صحیح از ${total})</p>
+    <p>وضعیت: <b>${status}</b></p>
+    <button onclick="backToMenu()">↩️ بازگشت به منو</button>
+    <button class="share-btn" onclick="copyResult()">📤 کپی نتیجه</button>
+  `;
+  document.getElementById("quizArea").style.display = "none";
+
+  // ذخیره متن برای کپی
+  window.shareText = shareText;
+
+  // شروع لرزش نمره
+  startResultVibration(score20);
+}
+
+function copyResult() {
+  if (window.shareText) {
+    navigator.clipboard.writeText(window.shareText).then(() => alert('نتیجه در کلیپ‌بورد کپی شد.'));
+  }
+}
+
+function updateTimerDisplay() {
+  const timerEl = document.getElementById("timer");
+  const mins = Math.floor(timeLeft / 60);
+  const secs = timeLeft % 60;
+  timerEl.textContent = `⏳ ${mins}:${secs.toString().padStart(2,'0')}`;
+  timerEl.classList.remove("warning", "danger");
+  if (timeLeft <= totalTime * 0.3) {
+    timerEl.classList.add("danger");
+    if (!warningBeeped) { if (settings.sound) playTone(1000, 0.12, "square"); warningBeeped = true; }
+  } else if (timeLeft <= totalTime * 0.6) {
+    timerEl.classList.add("warning");
+  }
+}
+
+// ======================= مرور جدول =======================
+function showTable() {
+  hideAll();
+  document.getElementById("tableArea").style.display = "block";
+  let html = "<h3>📋 جدول تناوبی (۱۱۸ عنصر)</h3><div class='table-wrapper'><table>";
+  html += "<tr><th>عدد اتمی</th><th>نماد</th><th>نام</th><th>نوع</th></tr>";
+  elements.forEach(e => {
+    html += `<tr><td>${e.atomic_number}</td><td>${e.symbol}</td><td>${e.name}</td><td>${e.type || ''}</td></tr>`;
+  });
+  html += "</table></div><br><button onclick='backToMenu()'>↩️ بازگشت</button>";
+  document.getElementById("tableArea").innerHTML = html;
+}
+
+// ======================= چت‌بات =======================
+function showChatBot() {
+  hideAll();
+  document.getElementById("chatArea").style.display = "block";
+  document.getElementById("chatMessages").innerHTML = `
+    <div class="message bot-message">
+      <div class="avatar">🤖</div>
+      <div class="bubble">سلام! عدد اتمی، نماد یا نام یک عنصر را وارد کنید.</div>
+    </div>`;
+}
+function updateChatLevel() { currentChatLevel = document.getElementById("chatLevel").value; }
+function sendMessage() {
+  const input = document.getElementById("userInput");
+  const text = input.value.trim();
+  if (!text) return;
+  addMessage(text, 'user');
+  processUserInput(text);
+  input.value = "";
+}
+function addMessage(txt, sender) {
+  const msgDiv = document.createElement("div");
+  msgDiv.className = `message ${sender}-message`;
+  msgDiv.innerHTML = `<div class="avatar">${sender === 'user' ? '🧑🏻‍🏫' : '🤖'}</div><div class="bubble">${txt}</div>`;
+  document.getElementById("chatMessages").appendChild(msgDiv);
+  document.getElementById("chatMessages").scrollTop = document.getElementById("chatMessages").scrollHeight;
+}
+function processUserInput(input) {
+  let response = "😕 متوجه نشدم. عدد اتمی (۱-۱۱۸)، نماد یا نام فارسی عنصر را وارد کنید.";
+  if (!isNaN(input)) {
+    const num = parseInt(input);
+    const elem = elements.find(e => e.atomic_number === num);
+    if (elem) response = generateResponse(elem);
+    else response = "❌ عدد اتمی باید بین ۱ تا ۱۱۸ باشد.";
+  } else if (/^[A-Za-z]{1,2}$/.test(input)) {
+    const sym = input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
+    const elem = elements.find(e => e.symbol === sym);
+    if (elem) response = generateResponse(elem);
+    else response = "❌ نماد معتبر نیست.";
+  } else {
+    const normInput = normalizePersian(input);
+    let best = null, minDist = Infinity;
+    elements.forEach(e => {
+      const dist = levenshtein(normInput, normalizePersian(e.name));
+      if (dist < minDist) { minDist = dist; best = e; }
+    });
+    if (best && minDist <= 3) response = generateResponse(best);
+    else response = "❌ نام عنصر تشخیص داده نشد.";
+  }
+  setTimeout(() => addMessage(response, 'bot'), 500);
+}
+function generateResponse(elem) {
+  switch (currentChatLevel) {
+    case 'general':
+      return `🔹 ${elem.name} (${elem.symbol}) – عدد اتمی ${elem.atomic_number}\n${elem.general || elem.detailed}`;
+    case 'expert':
+      return `🔬 ${elem.name} (${elem.symbol}) – عدد اتمی ${elem.atomic_number}، جرم اتمی ${elem.mass} u\n${elem.expert || elem.detailed}`;
+    default:
+      return `📘 ${elem.name} (${elem.symbol}) – عدد اتمی ${elem.atomic_number}\n${elem.detailed || elem.general}`;
+  }
+}
+
+// ======================= مدیریت نمایش =======================
+function hideAll() {
+  document.getElementById("menu").style.display = "none";
+  document.getElementById("quizArea").style.display = "none";
+  document.getElementById("resultArea").style.display = "none";
+  document.getElementById("tableArea").style.display = "none";
+  document.getElementById("chatArea").style.display = "none";
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
+
+function backToMenu() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  quizEnded = true;
+  stopResultVibration();
+  document.getElementById("menu").style.display = "block";
+  document.getElementById("quizArea").style.display = "none";
+  document.getElementById("resultArea").style.display = "none";
+  document.getElementById("tableArea").style.display = "none";
+  document.getElementById("chatArea").style.display = "none";
+}
+
+document.getElementById("userInput").addEventListener("keypress", e => {
+  if (e.key === "Enter") { e.preventDefault(); sendMessage(); }
+});
+
+window.onclick = function(event) {
+  if (event.target === document.getElementById('settingsOverlay')) {
+    document.getElementById('settingsOverlay').style.display = 'none';
+  }
+};
+</script>
+</body>
+</html>
